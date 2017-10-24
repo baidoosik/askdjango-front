@@ -1,0 +1,26 @@
+{% extends 'blog/layout.html' %}
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{ post.title }}</h1><br>
+            <p>{{ post.content|linebreaks }}</p>
+            <hr>
+            {% for comment in post.comment_set.all %}
+                <li>
+                    <a href="{% url "blog:comment_edit" post.id comment.id %}">{{ comment.message }}</a>
+                    <a href="{% url "blog:comment_delete" post.id comment.id %}">-삭제</a>
+                    &dash; <small> {{ comment.updated_at }}</small>
+                </li>
+            {% endfor %}
+            <hr/>
+            <a href="{% url "blog:comment_new" post.id %}" class="btn btn-primary">댓글 쓰기</a>
+            <hr/>
+            <a href=" {% url "blog:post_new" %}" class="btn btn-danger">새 글쓰기</a>
+            <a href=" {% url "blog:index"  %}" class="btn btn-primary">목록</a>
+            <a href=" {% url "blog:post_edit" post.id %}" class="btn btn-primary">수정</a>
+            <a href=" {% url "blog:post_delete" post.id %}" class="btn btn-danger">삭제</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+<form action="" method="POST" class="alert-danger">
+    <table class="table-bordered">
+        {% csrf_token %}
+        <p class="alert-danger">정말로 삭제하시겠습니까?</p>
+        <input type="submit" value="네" class="btn btn-danger">
+    </table>
+</form>

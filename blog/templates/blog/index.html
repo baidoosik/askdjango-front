@@ -1,0 +1,33 @@
+{% extends "blog/layout.html" %}
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-bordered table-hover" id="post-list">
+
+                <tbody>
+                    <tr>
+                        <th>#</th>
+                        <th>title</th>
+                        <th>updated_at</th>
+                    </tr>
+                    {% for post in post_list %}
+                    <tr>
+                        <td>{{ post.id }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.updated_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a id="load-more-btn" class="btn btn-primary">Load More ...</a>
+
+            <hr/>
+            <a href=" {% url "blog:post_new" %}" class="btn btn-primary">새 글쓰기</a>
+        </div>
+    </div>
+    <hr>
+
+</div>
+{% endblock %}

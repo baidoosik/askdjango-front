@@ -1,0 +1,16 @@
+# venv
+myvenv/
+
+# db
+db.sqlite3
+
+#xml
+.idea
+
+#env
+
+envs.json
+
+*.pyc
+__pycache__
+.DS_Store
