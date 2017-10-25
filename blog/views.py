@@ -77,4 +77,4 @@ class CommentDeleteView(DeleteView):
 comment_delete = CommentDeleteView.as_view()
 
 def example(request):
-    return render(request, 'example/ajax.html')
+    return render(request, 'example/homework.html')
