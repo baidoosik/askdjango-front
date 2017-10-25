@@ -1,0 +1,39 @@
+<!doctype>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ajax study</title>
+</head>
+<body>
+<container>
+<input id="search" type="submit" value="검색"></input>
+<div id="song">
+
+</div>
+</container>
+<hr>
+<footer>
+    &copy jordan, bae
+</footer>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        $('#search').click(function() {
+            var params = {query: '윤종신'};
+            $.get("http://www.melon.com/search/keyword/index.json?jscallback=?", params)
+                .done(function(response, textStatus, xhr) {
+                    console.log("---- done ----");
+                })
+                .fail(function(xhr, textStatus, error) {
+                    console.log("---- fail ----");
+                    console.log(xhr);
+                    console.log(textStatus);
+                    console.log(error);
+                })
+                .always(function(response_or_xhr, textStatus, xhr_or_error) {
+            // 인자가 done/fail 인자 매핑과 동일
+                });
+
+         });
+    </script>
+</body>
+</html>
