@@ -1,0 +1,63 @@
+<!doctype>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>askdjango-front</title>
+</head>
+<body>
+<container>
+    <a id="btn-naver-1" href="http://m.naver.com" target="_blank">Naver Button 1</a>
+    <a id="btn-naver-2" href="http://m.naver.com" target="_blank">Naver Button 2</a>
+
+    <ul id="my-list">
+        <li>list1</li>
+        <li>list2</li>
+        <li>list3</li>
+    </ul>
+    <form id='query-form'>
+        <input type="text" name="query">
+        <input type="submit" value="조회">
+    </form>
+
+</container>
+<hr>
+<footer>
+    &copy doosik bae
+</footer>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+    // onload event
+    $(document).ready(function() {
+        console.log('웹 페이지 로딩 완료');
+
+    });
+    $(function(){
+        console.log('웹페이지 로딩 완료 축약 표현');
+    });
+
+    // click event
+    $('#btn-naver-1').click(function(){
+        console.log('clicked btn-naver-1');
+    });
+    $('#btn-naver-2').click(function(e) {
+        e.preventDefault();  //return false; 도 동일한 효과
+        console.log('clicked btn-naver-2');
+    });
+    $('#my-list li').click(function() {
+        var content = $(this).html();
+        console.log('clicked: ' + content);
+    });
+
+
+    // submit event 리스너
+    $(function() {
+        $('#query-form').submit(function(e) {
+          e.preventDefault();
+          var query = e.name;
+          console.log("form submit" + query);
+        })
+    });
+    </script>
+</body>
+
+</html>
