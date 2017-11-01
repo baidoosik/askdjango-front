@@ -2,37 +2,15 @@
 {% block container %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <table class="table table-bordered table-hover" id="post-list">
-
-                <tbody>
-                    <tr>
-                        <th>#</th>
-                        <th>title</th>
-                        <th>updated_at</th>
-                    </tr>
-                    {% for post in post_list %}
-                    <tr>
-                        <td>{{ post.id }}</td>
-                        <td>{{ post.title }}</td>
-                        <td>{{ post.updated_at }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <a id="load-more-btn" class="btn btn-primary">Load More ...</a>
-
-            <hr/>
-            <a href=" {% url "blog:post_new" %}" class="btn btn-primary">새 글쓰기</a>
-            <hr/>
+        <div class="col-sm-12" id="post_list_wrapper">
+        {% include 'blog/_post_list.html' %}
             {% if is_paginated %}
                 {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">이전</a>
+                    <input id='previous-button' type="button" class="btn btn-default" value="이전">
                 {% endif %}
                 {{ page_obj.number }} 페이지
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">다음</a>
+                    <input id='next-button' type="button" class="btn btn-default" value="다음">
                 {% endif %}
             {% endif %}
         </div>
@@ -40,4 +18,28 @@
     <hr>
 
 </div>
+{% endblock %}
+{% block extra_contents %}
+<script>
+    $(function() {
+        $('#next-button').click(function() {
+            $.get('?page=2')
+                .done(function(html) {
+                    console.log(html);
+                    $('#post_list_wrapper').html(html);
+                })
+                .fail(function() {
+                    console.log('fail');
+                })
+                .always(function() {
+                    console.log('always');
+                });
+            return false;
+
+        });
+
+    });
+
+
+</script>
 {% endblock %}

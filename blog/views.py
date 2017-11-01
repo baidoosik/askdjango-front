@@ -11,6 +11,8 @@ class PostListView(ListView):
     paginate_by = 10
 
     def get_template_names(self):
+        if self.request.is_ajax():
+            return ['blog/_post_list.html']
         return ['blog/index.html']
 
 index = PostListView.as_view()
@@ -75,6 +77,7 @@ class CommentDeleteView(DeleteView):
         return resolve_url(self.object.post)
 
 comment_delete = CommentDeleteView.as_view()
+
 
 def example(request):
     return render(request, 'example/homework.html')
