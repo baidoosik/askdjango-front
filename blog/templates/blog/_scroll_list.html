@@ -1,0 +1,10 @@
+<tbody>
+    {% for post in post_list %}
+    <tr>
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.updated_at }}</td>
+    </tr>
+    {% endfor %}
+</tbody>
+

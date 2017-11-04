@@ -15,7 +15,20 @@ class PostListView(ListView):
             return ['blog/_post_list.html']
         return ['blog/index.html']
 
+
+class ScrollListView(ListView):
+    model = Post
+    paginate_by = 10
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['blog/_scroll_list.html']
+        return ['blog/scroll_list.html']
+
+
 index = PostListView.as_view()
+
+scroll = ScrollListView.as_view()
 
 
 class PostDetailView(DetailView):
