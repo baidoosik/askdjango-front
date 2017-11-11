@@ -22,6 +22,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="post-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">포스팅 제목</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...<br/>
+                ...<br/>
+                ...<br/>
+                ...<br/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                <a class="btn btn-primary btn-detail">자세히</a> </div>
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}
 {% block extra_contents %}
 <script>
@@ -73,6 +96,29 @@
 
         };
         $('#load-more-btn').click(load_more);
+
+        $(document).on('click', '#post-list tbody a', function(e) {
+            e.preventDefault();
+            var detail_url = $(this).attr('href');
+            
+            $.get(detail_url)
+                .done(function(json_obj) {
+                    var $modal = $('#post-modal');
+                    $modal.find('.modal-title').html(json_obj.title);
+                    $modal.find('.modal-body').html(json_obj.summary);
+                    $modal.find('.btn-detail').attr('href', detail_url);
+                    $modal.modal();
+                  
+                })
+                .fail(function(xhr, textStatus, error) {
+                    alert('failed : ' + error);
+                })
+                .always(function() {
+                    console.log('모달')
+                })
+
+        });
+            console.log('클릭')
     });
 
 

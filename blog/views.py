@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView,\
 UpdateView, CreateView
 from .models import Post, Comment
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.template.defaultfilters import truncatewords
 # Create your views here.
 
 
@@ -36,6 +38,15 @@ class PostDetailView(DetailView):
 
     def get_template_names(self):
         return ['blog/post_detail.html']
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.is_ajax():
+            return JsonResponse({
+                'title': self.object.title,
+                'summary': truncatewords(self.object.content, 20)
+            })
+        else:
+            return super().render_to_response(context)
 
 post_detail = PostDetailView.as_view()
 
