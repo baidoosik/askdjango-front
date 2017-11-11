@@ -1,4 +1,29 @@
 {% extends 'blog/layout.html' %}
+{% block extra_contents %}
+<script>
+    $(function() {
+        $(document).on('click', '.ajax-post-confirm', function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            var message = $(this).data('message');
+            var target_id =$(this).data('target-id');
+
+            if (confirm(message)) {
+                $.post(url)
+                .done(function() {
+                    $('#' +  target_id).remove();
+
+                })
+                .fail(function(xhr, textStatus, error) {
+                    alert('failed:' + error);
+                });
+            }
+        });
+    })
+
+</script>
+{% endblock %}
 {% block container %}
 <div class="container">
     <div class="row">
@@ -7,14 +32,17 @@
             <p>{{ post.content|linebreaks }}</p>
             <hr>
             {% for comment in post.comment_set.all %}
-                <li>
+                <li id="comment-{{ comment.id }}">
                     <a href="{% url "blog:comment_edit" post.id comment.id %}">{{ comment.message }}</a>
-                    <a href="{% url "blog:comment_delete" post.id comment.id %}">-삭제</a>
+                    <a href="{% url "blog:comment_delete" post.id comment.id %}"
+                        data-target-id="comment-{{ comment.id }}"
+                        class="ajax-post-confirm"
+                        data-message="삭제하시겠습니까"> -삭제</a>
                     &dash; <small> {{ comment.updated_at }}</small>
                 </li>
             {% endfor %}
             <hr/>
-            <a href="{% url "blog:comment_new" post.id %}" class="btn btn-primary">댓글 쓰기</a>
+            <a href="{% url "blog:comment_new" post.id %}"</a>
             <hr/>
             <a href=" {% url "blog:post_new" %}" class="btn btn-danger">새 글쓰기</a>
             <a href=" {% url "blog:index"  %}" class="btn btn-primary">목록</a>
