@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, resolve_url
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView,\
 UpdateView, CreateView
 from .models import Post, Comment
+from .forms import CommentModelForm
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.template.defaultfilters import truncatewords
@@ -48,6 +49,11 @@ class PostDetailView(DetailView):
         else:
             return super().render_to_response(context)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentModelForm()
+        return context
+
 post_detail = PostDetailView.as_view()
 
 
@@ -72,7 +78,7 @@ post_edit = PostEditView.as_view(fields=['title', 'content'])
 
 class CommentCreateView(CreateView):
     model = Comment
-    fields = ['message']
+    form_class = CommentModelForm
 
     def form_valid(self, form):
         comment = form.save(commit=False)
