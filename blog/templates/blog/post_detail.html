@@ -3,68 +3,37 @@
 {% block extra_contents %}
 <script>
     $(function() {
-        $(document).on('click', '.ajax-post-confirm', function(e) {
+        $(document).on('click', '#new-comment', function(e) {
             e.preventDefault();
 
-            var url = $(this).attr('href');
-            var message = $(this).data('message');
-            var target_id =$(this).data('target-id');
+            var action_url = $(this).attr('href');
+            var target_id = $(this).data('target-id');
 
-            if (confirm(message)) {
-                $.post(url)
-                .done(function() {
-                    $('#' +  target_id).remove();
+            $.get(action_url)
+                .done(function(form_html) {
+                    var $modal = $('#comment-form-modal');
+                    $modal.find('.modal-body').html(form_html);
 
+                    $form = $modal.find('.modal-body form');
+                    $form.attr('action', action_url);
+
+                    if (target_id) {
+                        $form.attr('data-target-id', target_id);
+                    }
+                    else{
+                        $form.removeData('data-target-id');
+                    }
+
+                    $modal.on('shown.bs.modal',  function(e) {
+                        $(this).find('textarea:first').focus();
+                    });
+                    $modal.modal();
                 })
                 .fail(function(xhr, textStatus, error) {
                     alert('failed:' + error);
                 });
-            }
-        });
-
-        $('#comment_form').submit(function(e) {
-            e.preventDefault();
-
-            var $form = $(this);
-            var $submit = $form.find('[type=submit]');
-            $submit.prop('disabled', true);
-            var url = $form.attr('action');
-            var data = $form.serialize();
-
-            $.post(url, data)
-                .done(function(obj) {
-                    if( obj.is_success == false){
-                        alert(obj.message)
-                    }
-                    else {
-                        console.log(obj);
-                        $('#comment-list').prepend([
-                            '<li id="comment-' + obj.id + '">',
-                                obj.message,
-                                '&dash;',
-                                '<a href="' + obj.edit_url + '">',
-                                    '<small>' + obj.updated_at + '</small>',
-                                '</a>',
-                                '<a href="'+ obj.delete_url + '" class="ajax-post-confirm" data-target-id="comment-' + obj.id + '" data-message="정말 삭제하시겠습니까?">',
-                                    '<small>삭제</small>',
-                                '</a>',
-                            '</li>'
-                             ].join(''));
-
-                            $form[0].reset()
-
-                    }
-                })
-                .fail(function(xhr, testStatus, error) {
-                    console.log("fail");
-                    alert('failed:' + error);
-                })
-                .always(function() {
-                    $submit.prop('disabled', false);
-                });
-
-        });
-    })
+        })
+    });
 
 
 
@@ -79,27 +48,36 @@
             <hr>
             <div id="comment-list">
             {% for comment in post.comment_set.all %}
-                <li id="comment-{{ comment.id }}">
-                    <a href="{% url "blog:comment_edit" post.id comment.id %}">{{ comment.message }}</a>
-                    <a href="{% url "blog:comment_delete" post.id comment.id %}"
-                        data-target-id="comment-{{ comment.id }}"
-                        class="ajax-post-confirm"
-                        data-message="삭제하시겠습니까"> -삭제</a>
-                    &dash; <small> {{ comment.updated_at }}</small>
-                </li>
+                {% include "blog/_comment.html" %}
             {% endfor %}
             </div>
             <hr/>
-            <form id="comment_form" action="{% url "blog:comment_new" post.pk %}" method="post">
-                {% csrf_token %}
-                {% bootstrap_form comment_form %}
-                <input type="submit" class="btn btn-primary btn-block" value="댓글작성"/>
-            </form>
+            <a id="new-comment" href="{% url "blog:comment_new" post.pk %}"
+                class="comment-form-btn btn btn-primary btn-block"
+                >댓글쓰기</a>
             <hr/>
             <a href=" {% url "blog:post_new" %}" class="btn btn-danger">새 글쓰기</a>
             <a href=" {% url "blog:index"  %}" class="btn btn-primary">목록</a>
             <a href=" {% url "blog:post_edit" post.id %}" class="btn btn-primary">수정</a>
             <a href=" {% url "blog:post_delete" post.id %}" class="btn btn-danger">삭제</a>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="comment-form-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Comment Form</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...<br/>
+                ...<br/>
+                ...<br/>
+                ...<br/>
+            </div>
         </div>
     </div>
 </div>
