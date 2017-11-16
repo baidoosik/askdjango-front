@@ -17,3 +17,7 @@ __pycache__
 
 # bower
 bower_components
+
+#media
+
+media/*
