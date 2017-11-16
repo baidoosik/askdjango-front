@@ -3,7 +3,7 @@
 {% block extra_contents %}
 <script>
     $(function() {
-        $(document).on('click', '#new-comment', function(e) {
+        $(document).on('click', '.comment-form-btn', function(e) {
             e.preventDefault();
 
             var action_url = $(this).attr('href');

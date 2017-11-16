@@ -1,7 +1,8 @@
 <li id="comment-{{ comment.id }}">
     {{ comment.message }}
     &dash;
-    <a href="{% url "blog:comment_edit" comment.post.id comment.id %}">
+    <a href="{% url "blog:comment_edit" comment.post.id comment.id %}"
+            class="comment-form-btn" data-target-id="comment-{{ comment.id }}">
         <small> {{ comment.updated_at }}</small
     </a>
     <a href="{% url "blog:comment_delete" comment.post.id comment.id %}"
