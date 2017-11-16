@@ -103,7 +103,7 @@ comment_new = CommentCreateView.as_view(template_name='blog/comment_form.html')
 
 class CommentUpdateView(UpdateView):
     model = Comment
-    fields = ['message']
+    form_class = CommentModelForm
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -121,7 +121,7 @@ class CommentUpdateView(UpdateView):
         if self.request.is_ajax():
             return ['blog/_comment_form.html']
         return ['blog/comment_form.html']
-    
+
 comment_edit = CommentUpdateView.as_view(template_name='blog/comment_form.html')
 
 

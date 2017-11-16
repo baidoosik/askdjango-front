@@ -24,8 +24,3 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-id']
-
-
-from django.db import models
-
-# Create your models here.

@@ -32,7 +32,41 @@
                 .fail(function(xhr, textStatus, error) {
                     alert('failed:' + error);
                 });
-        })
+        });
+
+        $(document).on('submit', '#comment-form-modal form', function(e) {
+            e.preventDefault();
+            console.log("Submit");
+            // jQuery Form Plugin의 ajaxSubmit을 활용 : ajax로 파일까지 모두 전달
+            $(this).ajaxSubmit({
+                success: function(response, statusText, xhr, $form) {
+                    console.log("---- done ----");
+                    var html = response;
+                    console.log(html);
+                    var $resp = $(html);
+                    var target_id = $form.data('target-id');
+                    if ( $resp.find('.has-error').length > 0 ) {
+                        var fields_html = $resp.html();
+                        $('#comment-form-modal .modal-body form').html(fields_html);
+                    }
+                    else {
+                        if ( target_id ) {
+                            $('#' + target_id).html($resp.html());
+                        }
+                        else {
+                            $resp.prependTo('#comment-list');
+                            }
+                            $('#comment-form-modal').modal('hide');
+                            $form[0].reset();
+                        }
+                    },
+                error: function(xhr, textStatus, error) {
+                    alert('failed : ' + error);
+                },
+                complete: function(xhr, textStatus) {
+                }
+            });
+        });
     });
 
 
