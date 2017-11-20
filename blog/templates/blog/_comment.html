@@ -1,6 +1,7 @@
+{% load thumbnail %}
 <li id="comment-{{ comment.id }}">
     {% if comment.photo %}
-        <img src="{{ comment.photo.url }}" width="100px" height="100px"/>
+        <img src="{% thumbnail comment.photo 100x100 crop %}"/>
     {% endif %}
     {{ comment.message }}
     &dash;

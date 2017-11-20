@@ -31,6 +31,9 @@ class ScrollListView(ListView):
 
 index = PostListView.as_view()
 
+# def index(request):
+#     return render(request, 'example/beyul_3.html')
+
 scroll = ScrollListView.as_view()
 
 
