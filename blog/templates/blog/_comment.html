@@ -1,12 +1,12 @@
 {% load thumbnail %}
-<div id="comment-{{ comment.id }}" class="media">
+<div id="comment-{{ comment.id }}" class="media" comment-data-id="{{ comment.id }}">
     <div class="media-left">
         {% if comment.photo %}
             <img class="media-object" src="{% thumbnail comment.photo 100x100 crop %}"/>
         {% endif %}
     </div>
     <div class="media-body">
-        {{ comment.message }}
+        <p>{{ comment.message }}</p>
         <h5 class="mt-0">Media heading</h5>
 
         <a href="{% url "blog:comment_edit" comment.post.id comment.id %}"

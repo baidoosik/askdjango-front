@@ -67,6 +67,14 @@
                 }
             });
         });
+
+        $.get('{% url "blog:comment_list" post.id %}')
+            .done(function(html) {
+                $('#comment-list').html(html);
+            })
+            .fail(function(xhr, textStatus, error) {
+                alert('failed : ' + error);
+            });
     });
 
 
@@ -81,9 +89,7 @@
             <p>{{ post.content|linebreaks }}</p>
             <hr>
             <div id="comment-list">
-            {% for comment in post.comment_set.all %}
-                {% include "blog/_comment.html" %}
-            {% endfor %}
+
             </div>
             <hr/>
             <a id="new-comment" href="{% url "blog:comment_new" post.pk %}"

@@ -104,6 +104,17 @@ class CommentCreateView(CreateView):
 comment_new = CommentCreateView.as_view(template_name='blog/comment_form.html')
 
 
+class CommentListView(ListView):
+    model = Comment
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(post__id=self.kwargs['post_pk']).all()
+        return qs
+
+comment_list = CommentListView.as_view()
+
+
 class CommentUpdateView(UpdateView):
     model = Comment
     form_class = CommentModelForm
